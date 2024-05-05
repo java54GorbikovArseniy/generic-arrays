@@ -13,7 +13,6 @@ public class Arrays {
 	}
 
 	private static <T> boolean equals(T elem1, T elem2) {
-		
 		return elem1 == null ? elem1 == elem2 : elem1.equals(elem2);
 	}
 	public static <T> T min(T[] array, Comparator<T> comp) {
@@ -27,7 +26,7 @@ public class Arrays {
 			}
 		}
 		return res;
-		
+
 	}
 	public static <T> void bubbleSort(T[] array, Comparator<T> comp) {
 		boolean isUnsorted = true;
@@ -43,27 +42,18 @@ public class Arrays {
 			}
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public static <T> void bubbleSort(T[] array) {
-		//TODO
-		//research: write the code based on the existing one of bubbleSort with comparator
+		bubbleSort(array, (Comparator<T>)Comparator.naturalOrder());
 	}
-	
+
 	private static <T> void swap(T[] array, int i, int j) {
 		T tmp = array[i];
 		array[i] = array[j];
 		array[j] =tmp;
-		
+
 	}
 	public static <T> int binarySearch(T[] array, T key, Comparator<T> comp) {
-		//left index = 0
-		//right index = array.length - 1
-		//middle (left + right) / 2
-		//left part - left index, right index = middle - 1
-		//right part - left index = middle + 1, right index
-		//while left <= right
-		//returns exactly what the standard binarySearch does
-		//if there are several equaled elements no guarantee that
-		// being returned index is the one to the first occurrence
 		int left = 0;
 		int right = array.length - 1;
 		int middle = (left + right) / 2;
@@ -79,8 +69,6 @@ public class Arrays {
 		return left > right ? -(left + 1) : middle;
 	}
 	public static <T> T[] search(T[] array, Predicate<T> predicate) {
-		//Impossible to allocate memory for generic array
-		//Only Arrays.copyOf may be used
 		T[] arResult = java.util.Arrays.copyOf(array, array.length);
 		int index = 0;
 		for(int i = 0; i < array.length; i++) {
@@ -91,8 +79,6 @@ public class Arrays {
 		return java.util.Arrays.copyOf(arResult,index);
 	}
 	public static <T> T[] removeIf(T[] array, Predicate<T> predicate) {
-		//removes all elements of array matching a given predicate
-		//returns new array with no elements matching a given predicate
 		return search(array, predicate.negate());
 	}
 	public static <T> T[] add (T[] array, T element) {
@@ -102,5 +88,19 @@ public class Arrays {
 	}
 	public static <T> T[] copy(T[] array) {
 		return java.util.Arrays.copyOf(array, array.length);
+	}
+	public static <T> T[] insert(T[] array, int index, T element) {
+		T[] result = java.util.Arrays.copyOf(array, array.length + 1);
+		System.arraycopy(array, index, result, index + 1, array.length - index);
+		result[index] = element;
+		return result;
+	}
+	public static <T> T[] insertSorted(T[] array, T element,
+									   Comparator<T> comp) {
+		int index = binarySearch(array, element, comp);
+		if (index < 0) {
+			index = - (index + 1);
+		}
+		return insert(array, index, element);
 	}
 }
